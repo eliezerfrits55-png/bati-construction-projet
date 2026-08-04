@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1785851213515",
+    "first_name": "fridz",
+    "last_name": "elie",
+    "email": "eliezerfrits55@gmail.com",
+    "phone": "673716084",
+    "city": "Douala",
+    "role": "technician",
+    "status": "pending",
+    "password_hash": "$2b$10$VHwEJfX.jlaKyoJpyZm01upduPaRdjxovqxud4xFQ59pU1Kuf090q",
+    "created_at": "2026-08-04T13:46:53.781Z"
+  },
+  {
+    "id": "1785853867432",
+    "first_name": "elie",
+    "last_name": "fridz",
+    "email": "eliezer@gmail.com",
+    "phone": "675860327",
+    "city": "yaounde",
+    "role": "client",
+    "status": "active",
+    "password_hash": "$2b$10$8frxwZwLwaldxWEVftv8YO05PxUCfbXG54l7NZEAo0LcmsOcCSRYy",
+    "created_at": "2026-08-04T14:31:07.544Z"
+  },
+  {
+    "id": "1785853989006",
+    "first_name": "auscar",
+    "last_name": "mballa",
+    "email": "mballa@gmail.com",
+    "phone": "673716084",
+    "city": "bertoua",
+    "role": "technician",
+    "status": "pending",
+    "password_hash": "$2b$10$u7aoM/f8YahWRZdRsxVd4.o/VohqLP3oKVzfmtUUy5wV5L5iat5o.",
+    "created_at": "2026-08-04T14:33:09.120Z"
+  }
+]

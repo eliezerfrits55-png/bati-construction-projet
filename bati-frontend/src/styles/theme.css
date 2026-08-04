@@ -1,0 +1,67 @@
+/* ======================
+   THEME BAT-CONSTRUCTION
+   Couleurs & variables CSS
+====================== */
+
+:root {
+  /* Couleurs principales */
+  --color-primary: #ea580c; /* orange-600 */
+  --color-primary-hover: #c2410c; /* orange-700 */
+  --color-primary-light: #fff7ed; /* orange-50 */
+
+  --color-secondary: #f59e0b; /* amber-500 */
+  --color-secondary-hover: #d97706; /* amber-600 */
+
+  /* Neutres */
+  --color-bg: #f9fafb; /* gray-50 */
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb; /* gray-200 */
+  --color-text: #111827; /* gray-900 */
+  --color-text-muted: #6b7280; /* gray-500 */
+
+  /* États */
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-warning: #ca8a04;
+  --color-info: #2563eb;
+
+  /* Rayons */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* ======================
+   GRADIENTS
+====================== */
+.gradient-primary {
+  background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+}
+
+.gradient-primary-hover {
+  background: linear-gradient(135deg, #c2410c 0%, #d97706 100%);
+}
+
+/* ======================
+   FOCUS VISIBLE (accessibilité)
+====================== */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ======================
+   PRINT
+====================== */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
