@@ -1,0 +1,11 @@
+{
+  "name": "bati-connect",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix bati-frontend run dev",
+    "build": "npm --prefix bati-frontend run build",
+    "start": "npm --prefix bati-backend-node run start",
+    "dev:frontend": "npm --prefix bati-frontend run dev",
+    "dev:backend": "npm --prefix bati-backend-node run dev"
+  }
+}

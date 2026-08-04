@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { BriefcaseBusiness, ClipboardList, FileText, Image, Star } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import StatCard from "../Shared/StatCard";
 
@@ -56,24 +57,35 @@ const TechnicianDashboard = () => {
     },
   ];
 
+  const statIcons = {
+    "Nouvelles demandes": <ClipboardList size={21} />,
+    "Devis envoyÃ©s": <FileText size={21} />,
+    "Chantiers en cours": <BriefcaseBusiness size={21} />,
+    "Note moyenne": <Star size={21} fill="currentColor" />,
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="relative overflow-hidden rounded-3xl bg-slate-950 px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-8">
+        <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl" />
+        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-orange-200">Espace professionnel</p>
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
             Bonjour, {user?.first_name || "Technicien"} 👋
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="mt-2 text-sm text-slate-300">
             Gérez vos demandes et suivez vos performances
           </p>
         </div>
         <Link
           to="/technician/profile"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/15"
         >
           👤 Mon profil
         </Link>
+        </div>
       </div>
 
       {/* Stats */}
@@ -83,7 +95,7 @@ const TechnicianDashboard = () => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            icon={stat.icon}
+            icon={statIcons[stat.title] || stat.icon}
             color={stat.color}
           />
         ))}
@@ -93,9 +105,10 @@ const TechnicianDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Link
           to="/technician/requests"
-          className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-lg"
         >
-          <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-100 text-transparent transition group-hover:bg-orange-500">
+            <ClipboardList className="text-orange-600 group-hover:text-white" size={22} />
             📥
           </div>
           <div>
@@ -106,9 +119,10 @@ const TechnicianDashboard = () => {
 
         <Link
           to="/technician/quotes"
-          className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg"
         >
-          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-transparent transition group-hover:bg-blue-600">
+            <FileText className="text-blue-600 group-hover:text-white" size={22} />
             📝
           </div>
           <div>
@@ -119,9 +133,10 @@ const TechnicianDashboard = () => {
 
         <Link
           to="/technician/portfolio"
-          className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-lg"
         >
-          <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-2xl">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-100 text-transparent transition group-hover:bg-purple-600">
+            <Image className="text-purple-600 group-hover:text-white" size={22} />
             🖼️
           </div>
           <div>
@@ -133,7 +148,7 @@ const TechnicianDashboard = () => {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Demandes en attente */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Demandes en attente</h2>
             <Link
@@ -166,7 +181,7 @@ const TechnicianDashboard = () => {
         </div>
 
         {/* Prochains chantiers */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Prochains chantiers</h2>
             <Link

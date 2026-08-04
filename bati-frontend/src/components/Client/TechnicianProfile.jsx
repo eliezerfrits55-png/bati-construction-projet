@@ -343,10 +343,19 @@ const TechnicianProfile = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-            <h2 className="font-semibold text-gray-900 mb-4">
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="mb-5 flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+            <h2 className="font-black tracking-tight text-slate-900">
               Avis clients ({tech.reviewsCount})
             </h2>
+                <p className="mt-1 text-sm text-slate-500">Retours vérifiés après intervention</p>
+              </div>
+              <div className="flex items-center gap-3 rounded-2xl bg-amber-50 px-4 py-3">
+                <span className="text-2xl font-black text-slate-900">{tech.rating}</span>
+                <div><RatingStars rating={tech.rating} /><p className="mt-1 text-xs text-slate-500">Note moyenne</p></div>
+              </div>
+            </div>
             <div className="space-y-4">
               {tech.reviews.slice(0, visibleReviews).map((review) => (
                 <div

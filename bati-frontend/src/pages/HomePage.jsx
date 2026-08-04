@@ -127,7 +127,11 @@ const HomePage = () => {
                 {onlineCount} techniciens disponibles à {selectedCity}
               </div>
 
-              <h1 className="max-w-4xl text-4xl font-black leading-[1.05] text-white md:text-6xl">
+              <div className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.22em] text-orange-200">
+                <span className="h-px w-10 bg-orange-300" />
+                L’expertise au service de vos projets
+              </div>
+              <h1 className="max-w-4xl text-4xl font-black leading-[1.05] tracking-tight text-white md:text-6xl">
                 Les meilleurs techniciens du bâtiment, au même endroit
               </h1>
 
@@ -223,10 +227,10 @@ const HomePage = () => {
         <section className="relative z-10 mx-auto -mt-10 max-w-6xl px-4 sm:px-6 lg:px-8">
           <form
             onSubmit={handleSearch}
-            className="grid gap-3 rounded-2xl border border-zinc-200 bg-white p-3 text-zinc-950 shadow-2xl shadow-black/25 md:grid-cols-[1fr_1fr_auto]"
+            className="grid gap-3 rounded-3xl border border-white/70 bg-white/95 p-3 text-zinc-950 shadow-2xl shadow-black/25 backdrop-blur-xl md:grid-cols-[1fr_1fr_auto]"
           >
-            <label className="flex items-center gap-3 rounded-xl bg-zinc-50 px-4 py-4 ring-1 ring-zinc-100">
-              <Search className="text-purple-700" size={22} />
+            <label className="group flex items-center gap-3 rounded-2xl border border-zinc-100 bg-zinc-50 px-4 py-4 transition focus-within:border-purple-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-purple-100">
+              <Search className="text-purple-700 transition group-focus-within:scale-110" size={22} />
               <span className="flex-1">
                 <span className="mb-1 block text-xs font-bold uppercase tracking-wide text-zinc-500">
                   Quel métier ?
@@ -240,8 +244,8 @@ const HomePage = () => {
               </span>
             </label>
 
-            <label className="flex items-center gap-3 rounded-xl bg-zinc-50 px-4 py-4 ring-1 ring-zinc-100">
-              <MapPin className="text-purple-700" size={22} />
+            <label className="group flex items-center gap-3 rounded-2xl border border-zinc-100 bg-zinc-50 px-4 py-4 transition focus-within:border-purple-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-purple-100">
+              <MapPin className="text-purple-700 transition group-focus-within:scale-110" size={22} />
               <span className="flex-1">
                 <span className="mb-1 block text-xs font-bold uppercase tracking-wide text-zinc-500">
                   Quelle ville ?
@@ -264,7 +268,7 @@ const HomePage = () => {
 
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-xl bg-purple-700 px-8 py-4 font-bold text-white transition hover:bg-purple-800"
+              className="inline-flex items-center justify-center rounded-2xl bg-linear-to-r from-orange-500 to-purple-700 px-8 py-4 font-bold text-white shadow-lg shadow-purple-900/20 transition hover:-translate-y-0.5 hover:from-orange-600 hover:to-purple-800"
             >
               Rechercher
             </button>
@@ -369,22 +373,23 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className="bg-zinc-100 px-4 py-24 text-zinc-950 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-linear-to-b from-zinc-50 to-white px-4 py-24 text-zinc-950 sm:px-6 lg:px-8">
+          <div className="absolute left-1/2 top-0 h-64 w-96 -translate-x-1/2 rounded-full bg-purple-200/30 blur-3xl" />
           <div className="mx-auto max-w-7xl">
-            <div className="mb-12 text-center">
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-purple-700">
+            <div className="relative mb-12 text-center">
+              <p className="inline-flex rounded-full border border-purple-200 bg-purple-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-purple-700">
                 Avis clients
               </p>
-              <h2 className="mt-3 text-3xl font-black md:text-4xl">
+              <h2 className="mt-4 text-3xl font-black tracking-tight md:text-4xl">
                 Ce qu’ils disent de BatiConnect
               </h2>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="relative grid gap-6 md:grid-cols-3">
               {testimonials.map((testimonial) => (
                 <article
                   key={testimonial.name}
-                  className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+                  className="group rounded-3xl border border-zinc-200/80 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-200 hover:shadow-xl hover:shadow-purple-950/10"
                 >
                   <Quote className="mb-5 text-purple-200" size={30} />
                   <div className="mb-4 flex gap-1 text-amber-500">
@@ -396,7 +401,7 @@ const HomePage = () => {
                     “{testimonial.quote}”
                   </p>
                   <div className="mt-6 flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-purple-100 font-black text-purple-700">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-purple-600 to-indigo-700 font-black text-white shadow-lg shadow-purple-200">
                       {testimonial.name.charAt(0)}
                     </div>
                     <div>
@@ -410,23 +415,25 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className="bg-zinc-950 px-4 py-24 text-zinc-100 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-zinc-950 px-4 py-24 text-zinc-100 sm:px-6 lg:px-8">
+          <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-purple-700/20 blur-3xl" />
+          <div className="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
           <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-purple-300">
+            <div className="relative">
+              <p className="inline-flex rounded-full border border-purple-300/20 bg-purple-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-purple-200">
                 Sécurité et sérénité
               </p>
-              <h2 className="mt-3 text-3xl font-black md:text-4xl">
+              <h2 className="mt-5 max-w-2xl text-3xl font-black tracking-tight md:text-5xl">
                 Nous bâtissons la confiance entre pros et clients
               </h2>
-              <p className="mt-5 max-w-xl leading-7 text-zinc-400">
+              <p className="mt-5 max-w-xl text-base leading-8 text-zinc-400">
                 BatiConnect simplifie la rénovation au Cameroun en connectant
                 les meilleurs talents du bâtiment avec des clients qui veulent
                 des délais, des prix et une qualité maîtrisés.
               </p>
               <div className="mt-8 flex flex-wrap gap-3 text-sm text-zinc-300">
                 {cities.map((city) => (
-                  <span key={city} className="rounded-full border border-white/10 px-4 py-2">
+                  <span key={city} className="rounded-full border border-white/10 bg-white/5 px-4 py-2 font-semibold text-zinc-300 transition hover:border-purple-300/40 hover:bg-purple-500/10 hover:text-white">
                     {city}
                   </span>
                 ))}
@@ -434,11 +441,11 @@ const HomePage = () => {
             </div>
 
             <div className="grid gap-4">
-              {features.map((feature) => {
+              {features.map((feature, index) => {
                 const Icon = feature.icon;
                 return (
-                  <div key={feature.title} className="flex gap-4 rounded-2xl border border-white/10 bg-white/4 p-5">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-500/15 text-purple-200">
+                  <div key={feature.title} className="group flex gap-4 rounded-3xl border border-white/10 bg-white/4 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-purple-300/30 hover:bg-white/8 hover:shadow-xl hover:shadow-purple-950/20">
+                    <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-purple-200 transition group-hover:scale-105 ${index === 1 ? "bg-orange-500/15 text-orange-200" : index === 2 ? "bg-emerald-500/15 text-emerald-200" : "bg-purple-500/15"}`}>
                       <Icon size={24} />
                     </span>
                     <div>
@@ -454,24 +461,25 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className="bg-white px-4 py-16 text-zinc-950 sm:px-6 lg:px-8">
+        <section className="bg-white px-4 py-20 text-zinc-950 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
             {[
               [Users, "300+", "Techniciens vérifiés"],
               [Hammer, "500+", "Chantiers accompagnés"],
               [BadgeCheck, "4.8/5", "Satisfaction moyenne"],
             ].map(([Icon, value, label]) => (
-              <div key={label} className="rounded-2xl border border-zinc-200 p-6">
-                <Icon className="mb-4 text-purple-700" size={28} />
-                <p className="text-4xl font-black">{value}</p>
-                <p className="mt-1 text-sm text-zinc-600">{label}</p>
+              <div key={label} className="group rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-200 hover:shadow-xl hover:shadow-purple-950/10">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-100 text-purple-700 transition group-hover:bg-purple-700 group-hover:text-white"><Icon size={25} /></div>
+                <p className="text-4xl font-black tracking-tight">{value}</p>
+                <p className="mt-2 text-sm font-medium text-zinc-500">{label}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="bg-purple-700 px-4 py-18 text-white sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
+        <section className="relative overflow-hidden bg-linear-to-br from-purple-800 via-purple-700 to-indigo-800 px-4 py-20 text-white sm:px-6 lg:px-8">
+          <div className="absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+          <div className="relative mx-auto flex max-w-5xl flex-col items-center justify-between gap-8 text-center md:flex-row md:text-left">
             <div>
               <h2 className="text-3xl font-black">Prêt à démarrer votre projet ?</h2>
               <p className="mt-2 text-purple-100">
@@ -480,7 +488,7 @@ const HomePage = () => {
             </div>
             <Link
               to="/register"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 font-bold text-purple-700 transition hover:bg-purple-50"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-white px-7 py-4 font-bold text-purple-700 shadow-xl shadow-purple-950/20 transition hover:-translate-y-0.5 hover:bg-purple-50"
             >
               Démarrer
               <ArrowRight size={18} />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Toast from "../Shared/Toast";
 
 const MOCK_USERS = [
@@ -16,6 +17,7 @@ const MOCK_USERS = [
     name: "Jean Mbarga",
     email: "jean.mbarga@email.com",
     role: "technician",
+    trade: "Plomberie",
     city: "Douala",
     status: "active",
     joined: "02 mai 2026",
@@ -25,6 +27,7 @@ const MOCK_USERS = [
     name: "Paul Nguema",
     email: "paul.n@email.com",
     role: "technician",
+    trade: "Électricité",
     city: "Yaoundé",
     status: "active",
     joined: "20 avr. 2026",
@@ -43,6 +46,7 @@ const MOCK_USERS = [
     name: "Marie Atangana",
     email: "marie.a@email.com",
     role: "technician",
+    trade: "Plomberie",
     city: "Douala",
     status: "suspended",
     joined: "05 mars 2026",
@@ -59,6 +63,8 @@ const MOCK_USERS = [
 ];
 
 const UsersManagement = () => {
+  const [searchParams] = useSearchParams();
+  const tradeFilter = searchParams.get("trade") || "";
   const [users, setUsers] = useState(MOCK_USERS);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -69,7 +75,8 @@ const UsersManagement = () => {
       u.name.toLowerCase().includes(search.toLowerCase()) ||
       u.email.toLowerCase().includes(search.toLowerCase());
     const matchRole = roleFilter === "all" || u.role === roleFilter;
-    return matchSearch && matchRole;
+    const matchTrade = !tradeFilter || (u.role === "technician" && u.trade === tradeFilter && u.status === "active");
+    return matchSearch && matchRole && matchTrade;
   });
 
   const toggleStatus = (id) => {
@@ -110,7 +117,7 @@ const UsersManagement = () => {
           Gestion des utilisateurs
         </h1>
         <p className="text-gray-600 mt-1">
-          {users.length} utilisateurs au total
+          {tradeFilter ? `Techniciens actifs — ${tradeFilter}` : `${users.length} utilisateurs au total`}
         </p>
       </div>
 

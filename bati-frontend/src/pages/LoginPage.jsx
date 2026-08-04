@@ -196,10 +196,10 @@ const LoginPage = () => {
               {!adminMode ? (
                 <button
                   type="button"
-                  onClick={() => setAdminMode(true)}
+                  onClick={() => navigate("/register/admin")}
                   className="w-full text-sm font-semibold text-slate-500 transition hover:text-orange-600"
                 >
-                  Accès administrateur
+                  Créer un compte administrateur
                 </button>
               ) : (
                 <form onSubmit={handleAdminAccess} className="space-y-3">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { AlertTriangle, CalendarDays, ChartNoAxesColumnIncreasing, ClipboardList, FileText, Image, LayoutDashboard, MessageCircle, UserRound, Users, Wrench } from "lucide-react";
 import { useAuth } from "../hooks/useAuth";
 
 const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
@@ -17,6 +18,34 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
     if (user.role === "admin") return "Administrateur";
     if (user.role === "technician") return "Technicien";
     return "Client";
+  };
+
+  const iconMap = {
+    dashboard: LayoutDashboard,
+    profile: UserRound,
+    portfolio: Image,
+    requests: ClipboardList,
+    quotes: FileText,
+    calendar: CalendarDays,
+    statistics: ChartNoAxesColumnIncreasing,
+    messages: MessageCircle,
+    technicians: Wrench,
+    users: Users,
+    trades: Wrench,
+    disputes: AlertTriangle,
+  };
+
+  const renderNavigationIcon = (item) => {
+    const iconKey = item.iconKey || (
+      item.href.includes("dashboard") ? "dashboard" :
+      item.href.includes("technicians") ? "technicians" :
+      item.href.includes("users") ? "users" :
+      item.href.includes("trades") ? "trades" :
+      item.href.includes("disputes") ? "disputes" :
+      item.href.includes("statistics") ? "statistics" : undefined
+    );
+    const Icon = iconMap[iconKey];
+    return Icon ? <Icon size={18} strokeWidth={1.8} /> : <span className="text-lg">{item.icon}</span>;
   };
 
   return (
@@ -44,14 +73,16 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
               to={item.href}
               end={item.end}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
+                `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition ${
                   isActive
-                    ? "bg-orange-50 text-orange-700"
-                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                    ? "bg-orange-50 text-orange-700 shadow-sm ring-1 ring-orange-100"
+                    : "text-gray-600 hover:bg-slate-50 hover:text-slate-950"
                 }`
               }
             >
-              <span className="text-lg">{item.icon}</span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition group-hover:bg-white group-hover:text-orange-600">
+                {renderNavigationIcon(item)}
+              </span>
               {item.name}
             </NavLink>
           ))}
@@ -118,12 +149,14 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
                       isActive
-                        ? "bg-orange-50 text-orange-700"
-                        : "text-gray-700 hover:bg-gray-50"
+                        ? "bg-orange-50 text-orange-700 shadow-sm ring-1 ring-orange-100"
+                        : "text-gray-600 hover:bg-slate-50"
                     }`
                   }
                 >
-                  <span className="text-lg">{item.icon}</span>
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition">
+                    {renderNavigationIcon(item)}
+                  </span>
                   {item.name}
                 </NavLink>
               ))}

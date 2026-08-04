@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
-import { Activity, CheckCircle2 } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle2, ClipboardCheck, Building2, Users } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import StatCard from "../Shared/StatCard";
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const statIcons = {
+    "Techniciens en attente": <Activity size={21} />,
+    "Utilisateurs totaux": <Users size={21} />,
+    "Chantiers ce mois": <Building2 size={21} />,
+    "Litiges ouverts": <AlertTriangle size={21} />,
+  };
 
   const stats = [
     { title: "Techniciens en attente", value: 7, icon: "⏳", color: "orange" },
@@ -93,7 +99,7 @@ const AdminDashboard = () => {
             key={stat.title}
             title={stat.title}
             value={stat.value}
-            icon={stat.icon}
+            icon={statIcons[stat.title] || stat.icon}
             color={stat.color}
           />
         ))}
@@ -103,9 +109,10 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
           to="/admin/technicians"
-          className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-lg"
         >
-          <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-xl">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-600 transition group-hover:bg-orange-500 group-hover:text-white">
+            <ClipboardCheck size={20} />
             ✅
           </div>
           <div>
@@ -118,9 +125,10 @@ const AdminDashboard = () => {
 
         <Link
           to="/admin/users"
-          className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg"
         >
-          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-xl">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white">
+            <Users size={20} />
             👥
           </div>
           <div>
@@ -131,9 +139,10 @@ const AdminDashboard = () => {
 
         <Link
           to="/admin/trades"
-          className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-green-300 hover:shadow-lg"
         >
-          <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-xl">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-green-600 transition group-hover:bg-green-600 group-hover:text-white">
+            <Building2 size={20} />
             🛠️
           </div>
           <div>
@@ -144,9 +153,10 @@ const AdminDashboard = () => {
 
         <Link
           to="/admin/disputes"
-          className="flex items-center gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-red-300 hover:shadow-lg"
         >
-          <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-xl">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-100 text-red-600 transition group-hover:bg-red-600 group-hover:text-white">
+            <AlertTriangle size={20} />
             ⚖️
           </div>
           <div>

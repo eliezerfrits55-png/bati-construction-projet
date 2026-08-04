@@ -3,6 +3,7 @@ import {
   BadgeCheck,
   BriefcaseBusiness,
   Camera,
+  FileImage,
   CheckCircle2,
   Clock3,
   Mail,
@@ -53,6 +54,8 @@ const ProfileManagement = () => {
     trade: user?.trade || "",
     experience_years: user?.experience_years || "",
     bio: user?.bio || "",
+    cni_number: user?.cni_number || "",
+    identity_photo: user?.identity_photo || "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -67,6 +70,8 @@ const ProfileManagement = () => {
     formData.trade,
     formData.experience_years,
     formData.bio,
+    formData.cni_number,
+    formData.identity_photo,
   ];
   const completion = Math.round(
     (completionItems.filter(Boolean).length / completionItems.length) * 100,
@@ -81,13 +86,16 @@ const ProfileManagement = () => {
     "w-full rounded-xl border border-red-400 px-4 py-3 text-sm outline-none transition focus:border-red-500 focus:ring-4 focus:ring-red-100";
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = event.target;
+    const nextValue = name === "identity_photo" ? files?.[0]?.name || "" : value;
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validate = () => {
     const newErrors = {};
+    if (!formData.cni_number.trim()) newErrors.cni_number = "Numéro de CNI requis";
+    if (!formData.identity_photo) newErrors.identity_photo = "Photo d'identité obligatoire";
     if (!formData.first_name.trim()) newErrors.first_name = "Prénom requis";
     if (!formData.last_name.trim()) newErrors.last_name = "Nom requis";
     if (!formData.phone.trim()) newErrors.phone = "Téléphone requis";
@@ -283,6 +291,28 @@ const ProfileManagement = () => {
               className={inputClass}
             />
           </Field>
+
+          <div className="rounded-2xl border border-orange-100 bg-orange-50/60 p-5">
+            <div className="mb-4 flex items-start gap-3">
+              <ShieldCheck className="mt-0.5 text-orange-600" size={20} />
+              <div>
+                <h3 className="font-bold text-gray-900">Vérification d'identité</h3>
+                <p className="mt-1 text-sm leading-5 text-gray-600">La CNI et la photo d'identité sont obligatoires pour valider votre profil.</p>
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Numéro de CNI *" error={errors.cni_number}>
+                <input type="text" name="cni_number" value={formData.cni_number} onChange={handleChange} placeholder="Ex. 123456789" className={errors.cni_number ? errorClass : inputClass} />
+              </Field>
+              <Field label="Photo d'identité *" error={errors.identity_photo}>
+                <label className={`flex cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-3 text-sm transition hover:border-orange-400 hover:bg-white ${errors.identity_photo ? "border-red-400" : "border-gray-300"}`}>
+                  <FileImage className="text-orange-600" size={20} />
+                  <span className="truncate text-gray-600">{formData.identity_photo || "Choisir une photo"}</span>
+                  <input type="file" name="identity_photo" accept="image/*" onChange={handleChange} className="hidden" />
+                </label>
+              </Field>
+            </div>
+          </div>
 
           <div className="flex justify-end border-t border-gray-100 pt-5">
             <button

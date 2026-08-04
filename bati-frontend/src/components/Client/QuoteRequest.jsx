@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { ClipboardCheck } from 'lucide-react';
 import LoadingSpinner from '../Shared/LoadingSpinner';
 import Toast from '../Shared/Toast';
 
@@ -70,20 +71,24 @@ const QuoteRequest = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="mx-auto max-w-5xl space-y-8">
       <div>
         <Link to="/client/search" className="text-sm text-gray-500 hover:text-orange-600">
           ← Retour
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900 mt-2">Demander un devis</h1>
+        <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Décrivez vos travaux</h1>
         <p className="text-gray-600 mt-1">
           Décrivez votre besoin pour recevoir des propositions
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+        <div className="flex items-start gap-3 border-b border-slate-100 pb-5">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-orange-100 text-orange-600"><ClipboardCheck size={22} /></div>
+          <div><h2 className="font-bold text-slate-900">Les détails de votre projet</h2><p className="mt-1 text-sm text-slate-500">Plus votre demande est précise, plus les devis seront pertinents.</p></div>
+        </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Titre du projet *</label>
+          <label className="mb-1.5 block text-sm font-semibold text-gray-700">Titre du projet *</label>
           <input
             type="text"
             name="title"
@@ -98,7 +103,7 @@ const QuoteRequest = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+          <label className="mb-1.5 block text-sm font-semibold text-gray-700">Description *</label>
           <textarea
             name="description"
             rows={4}

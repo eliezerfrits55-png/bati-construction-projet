@@ -13,6 +13,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 
 // Auth components (pour les pages qui les utilisent)
 import ForgotPassword from "../components/Auth/ForgotPassword";
+import RegisterAdmin from "../components/Auth/RegisterAdmin";
 
 // ========== CLIENT ==========
 import ClientDashboard from "../components/Client/DashboardClient";
@@ -131,6 +132,7 @@ const AppRoutes = () => {
             </PublicOnlyRoute>
           }
         />
+        <Route path="/register/admin" element={<PublicOnlyRoute><RegisterAdmin /></PublicOnlyRoute>} />
 
         <Route
           path="/forgot-password"
