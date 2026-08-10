@@ -59,7 +59,7 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   const createQuoteRequest = useCallback(async (data) => {
-    const response = await api.post("/quotes/request", data);
+    const response = await api.post("/quotes", data);
     return response.data;
   }, []);
 
@@ -115,9 +115,8 @@ export const DataProvider = ({ children }) => {
 
   // ========== ADMIN ==========
   const validateTechnician = useCallback(async (id, action) => {
-    const response = await api.patch(`/admin/technicians/${id}`, {
-      status: action,
-    });
+    const endpoint = action === "validated" ? "validate" : "block";
+    const response = await api.post(`/admin/technicians/${id}/${endpoint}`);
     return response.data;
   }, []);
 

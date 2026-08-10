@@ -30,7 +30,7 @@ const StatCard = ({ title, value, icon, color = "orange", trend = null }) => {
   const styles = colorStyles[color] || colorStyles.orange;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
+    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-gray-500">{title}</p>

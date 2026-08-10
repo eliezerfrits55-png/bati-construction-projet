@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         const response = await api.get("/auth/me", {
           headers: { Authorization: `Bearer ${storedToken}` },
         });
-        setUser(response.data);
+        setUser(response.data.user);
         setToken(storedToken);
     } catch {
       // Token invalide → on nettoie

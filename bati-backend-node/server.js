@@ -1,195 +1,216 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
 const compression = require("compression");
 const morgan = require("morgan");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
+const dotenv = require("dotenv");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
 const path = require("path");
 
-require("dotenv").config();
+// Load environment variables
+dotenv.config();
 
+// Import routes
+const authRoutes = require("./src/routes/authRoutes");
+const technicianRoutes = require("./src/routes/technicianRoutes");
+const projectRoutes = require("./src/routes/projectRoutes");
+const quoteRoutes = require("./src/routes/quoteRoutes");
+const messageRoutes = require("./src/routes/messageRoutes");
+const reviewRoutes = require("./src/routes/reviewRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
+const calendarRoutes = require("./src/routes/calendarRoutes");
+
+// Import middleware
+const { errorHandler } = require("./src/middlewares/erroHandler");
+
+// Initialize express
 const app = express();
-const port = process.env.PORT || 8000;
-const jwtSecret = process.env.JWT_SECRET || "bati-connect-local-secret";
-const dataDir = path.join(__dirname, "data");
-const usersFile = path.join(dataDir, "users.json");
+const httpServer = createServer(app);
 
-const ensureDataFile = () => {
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
+// ============ SOCKET.IO ============
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+  },
+});
 
-  if (!fs.existsSync(usersFile)) {
-    fs.writeFileSync(usersFile, "[]", "utf8");
-  }
-};
+// Socket.IO connection handling
+io.on("connection", (socket) => {
+  console.log("🔌 Client connecté:", socket.id);
 
-const readUsers = () => {
-  ensureDataFile();
-  return JSON.parse(fs.readFileSync(usersFile, "utf8"));
-};
+  // Join user room
+  socket.on("join-user", (userId) => {
+    socket.join(`user-${userId}`);
+    console.log(`👤 Utilisateur ${userId} a rejoint sa room`);
+  });
 
-const writeUsers = (users) => {
-  ensureDataFile();
-  fs.writeFileSync(usersFile, JSON.stringify(users, null, 2), "utf8");
-};
+  // Join conversation room
+  socket.on("join-conversation", (conversationId) => {
+    socket.join(`conversation-${conversationId}`);
+    console.log(`💬 Conversation ${conversationId} rejointe`);
+  });
 
-const publicUser = (user) => {
-  const { password_hash, ...safeUser } = user;
-  return safeUser;
-};
+  // Send message
+  socket.on("send-message", async (data) => {
+    try {
+      const { conversationId, senderId, receiverId, content } = data;
 
-const createToken = (user) =>
-  jwt.sign({ id: user.id, role: user.role }, jwtSecret, { expiresIn: "7d" });
+      // Sauvegarder le message dans la base de données
+      const Message = require("./src/models/Message");
+      const Conversation = require("./src/models/Conversation");
 
-const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization || "";
-  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+      const message = await Message.create({
+        conversation: conversationId,
+        sender: senderId,
+        receiver: receiverId,
+        content,
+      });
 
-  if (!token) {
-    return res.status(401).json({ message: "Token manquant" });
-  }
+      await Conversation.findByIdAndUpdate(conversationId, {
+        last_message: content,
+        last_message_at: new Date(),
+      });
 
-  try {
-    req.auth = jwt.verify(token, jwtSecret);
-    next();
-  } catch {
-    res.status(401).json({ message: "Session expirée ou invalide" });
-  }
-};
+      const populatedMessage = await message.populate(
+        "sender",
+        "first_name last_name avatar",
+      );
 
-app.use(helmet());
+      // Envoyer le message à la conversation
+      io.to(`conversation-${conversationId}`).emit(
+        "new-message",
+        populatedMessage,
+      );
+
+      // Notifier le destinataire
+      io.to(`user-${receiverId}`).emit(
+        "new-message-notification",
+        populatedMessage,
+      );
+    } catch (error) {
+      console.error("❌ Erreur envoi message:", error);
+    }
+  });
+
+  // Typing indicator
+  socket.on("typing", (data) => {
+    const { conversationId, userId, isTyping } = data;
+    socket.to(`conversation-${conversationId}`).emit("typing-indicator", {
+      userId,
+      isTyping,
+    });
+  });
+
+  // Mark messages as read
+  socket.on("mark-read", async (data) => {
+    try {
+      const { conversationId, userId } = data;
+      const Message = require("./src/models/Message");
+
+      await Message.updateMany(
+        { conversation: conversationId, receiver: userId, is_read: false },
+        { is_read: true, read_at: new Date() },
+      );
+
+      io.to(`conversation-${conversationId}`).emit("messages-read", {
+        conversationId,
+        userId,
+      });
+    } catch (error) {
+      console.error("❌ Erreur marquage lu:", error);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("🔌 Client déconnecté:", socket.id);
+  });
+});
+
+// ============ EXPRESS MIDDLEWARE ============
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }),
+);
 app.use(compression());
-app.use(cors({ origin: true, credentials: true }));
-app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  }),
+);
 app.use(morgan("dev"));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-app.get("/", (req, res) => {
-  res.json({ message: "BatiConnect API opérationnelle" });
-});
+// Static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// ============ MONGODB CONNECTION ============
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB connected successfully"))
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1);
+  });
+
+// ============ ROUTES ============
+// Health check
 app.get("/api/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-app.post("/api/auth/register", async (req, res) => {
-  const {
-    first_name,
-    last_name,
-    email,
-    phone,
-    password,
-    password_confirmation,
-    city,
-    role = "client",
-  } = req.body;
-
-  const errors = {};
-
-  if (!first_name?.trim()) errors.first_name = ["Prénom requis"];
-  if (!last_name?.trim()) errors.last_name = ["Nom requis"];
-  if (!email?.trim()) errors.email = ["Email requis"];
-  if (!phone?.trim()) errors.phone = ["Téléphone requis"];
-  if (!city?.trim()) errors.city = ["Ville requise"];
-  if (!password) errors.password = ["Mot de passe requis"];
-  if (password && password.length < 8) errors.password = ["Minimum 8 caractères"];
-  if (password !== password_confirmation) {
-    errors.password_confirmation = ["Les mots de passe ne correspondent pas"];
-  }
-  if (!["client", "technician", "admin"].includes(role)) {
-    errors.role = ["Rôle invalide"];
-  }
-
-  const users = readUsers();
-  const normalizedEmail = email?.trim().toLowerCase();
-
-  if (normalizedEmail && users.some((user) => user.email === normalizedEmail)) {
-    errors.email = ["Cet email est déjà utilisé"];
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return res.status(422).json({ message: "Données invalides", errors });
-  }
-
-  const user = {
-    id: Date.now().toString(),
-    first_name: first_name.trim(),
-    last_name: last_name.trim(),
-    email: normalizedEmail,
-    phone: phone.trim(),
-    city: city.trim(),
-    role,
-    status: role === "technician" ? "pending" : "active",
-    password_hash: await bcrypt.hash(password, 10),
-    created_at: new Date().toISOString(),
-  };
-
-  users.push(user);
-  writeUsers(users);
-
-  res.status(201).json({
-    token: createToken(user),
-    user: publicUser(user),
-  });
-});
-
-app.post("/api/auth/login", async (req, res) => {
-  const { email, password } = req.body;
-  const users = readUsers();
-  const user = users.find(
-    (currentUser) => currentUser.email === email?.trim().toLowerCase(),
-  );
-
-  if (!user || !(await bcrypt.compare(password || "", user.password_hash))) {
-    return res.status(401).json({ message: "Email ou mot de passe incorrect" });
-  }
-
   res.json({
-    token: createToken(user),
-    user: publicUser(user),
+    success: true,
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
   });
 });
 
-app.post("/api/auth/admin-access", (req, res) => {
-  const accessCode = String(req.body?.access_code || "").trim();
+// API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/technicians", technicianRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/quotes", quoteRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/calendar", calendarRoutes);
 
-  if (accessCode !== "22052") {
-    return res.status(401).json({ message: "Code administrateur incorrect" });
-  }
-
-  const admin = {
-    id: "admin-local",
-    first_name: "Administrateur",
-    last_name: "BatiConnect",
-    email: "admin@baticonnect.local",
-    role: "admin",
-    status: "active",
-  };
-
-  res.json({ token: createToken(admin), user: admin });
-});
-
-app.get("/api/auth/me", authMiddleware, (req, res) => {
-  const users = readUsers();
-  const user = users.find((currentUser) => currentUser.id === req.auth.id);
-
-  if (!user) {
-    return res.status(404).json({ message: "Utilisateur introuvable" });
-  }
-
-  res.json(publicUser(user));
-});
-
-app.post("/api/auth/forgot-password", (req, res) => {
-  res.json({ message: "Demande de réinitialisation reçue" });
-});
-
+// 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: "Route introuvable" });
+  res.status(404).json({
+    success: false,
+    message: "Route introuvable",
+  });
 });
 
-app.listen(port, () => {
-  console.log(`BatiConnect API démarrée sur http://localhost:${port}`);
+// ============ ERROR HANDLER ============
+app.use(errorHandler);
+
+// ============ START SERVER ============
+const PORT = process.env.PORT || 5000;
+httpServer.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🔌 Socket.IO ready`);
+  console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
 });
+
+// Handle uncaught exceptions
+process.on("uncaughtException", (err) => {
+  console.error("❌ Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("❌ Unhandled Rejection:", err);
+});
+
+module.exports = { app, httpServer, io };

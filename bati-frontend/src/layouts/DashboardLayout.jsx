@@ -42,6 +42,10 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
       item.href.includes("users") ? "users" :
       item.href.includes("trades") ? "trades" :
       item.href.includes("disputes") ? "disputes" :
+      item.href.includes("messages") ? "messages" :
+      item.href.includes("quotes") ? "quotes" :
+      item.href.includes("projects") ? "portfolio" :
+      item.href.includes("search") ? "technicians" :
       item.href.includes("statistics") ? "statistics" : undefined
     );
     const Icon = iconMap[iconKey];
@@ -49,19 +53,19 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-slate-100 flex">
       {/* ========== SIDEBAR (Desktop) ========== */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-white border-r border-gray-200 fixed inset-y-0 z-30">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 bg-slate-950 border-r border-slate-800 fixed inset-y-0 z-30">
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-gray-200">
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-white/10">
           <div className="w-9 h-9 bg-linear-to-br from-orange-600 to-amber-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">
             B
           </div>
           <div>
-            <p className="font-bold text-gray-900 leading-tight">
+            <p className="font-bold text-white leading-tight">
               Bat-Construction
             </p>
-            <p className="text-xs text-gray-500">{getRoleLabel()}</p>
+            <p className="text-xs text-slate-400">{getRoleLabel()}</p>
           </div>
         </div>
 
@@ -75,8 +79,8 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
               className={({ isActive }) =>
                 `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition ${
                   isActive
-                    ? "bg-orange-50 text-orange-700 shadow-sm ring-1 ring-orange-100"
-                    : "text-gray-600 hover:bg-slate-50 hover:text-slate-950"
+                    ? "bg-orange-500/15 text-orange-200 shadow-sm ring-1 ring-orange-400/30"
+                    : "text-slate-400 hover:bg-white/10 hover:text-white"
                 }`
               }
             >
@@ -89,16 +93,16 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
         </nav>
 
         {/* User + Logout */}
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-white/10 p-4">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-700 font-semibold">
               {user?.first_name?.[0]?.toUpperCase() || "U"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-medium text-white truncate">
                 {user?.first_name} {user?.last_name}
               </p>
-              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+              <p className="text-xs text-slate-500 truncate">{user?.email}</p>
             </div>
           </div>
           <button
@@ -177,7 +181,7 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
       {/* ========== MAIN CONTENT ========== */}
       <div className="flex-1 flex flex-col lg:pl-64">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-white border-b border-gray-200">
+        <header className="sticky top-0 z-20 bg-slate-900/95 backdrop-blur border-b border-white/10">
           <div className="flex items-center justify-between px-4 sm:px-6 h-16">
             {/* Mobile menu button */}
             <button
@@ -187,7 +191,7 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
               <span className="text-xl">☰</span>
             </button>
 
-            <h1 className="text-lg font-semibold text-gray-900 hidden sm:block">
+            <h1 className="text-lg font-semibold text-white hidden sm:block">
               {title}
             </h1>
 
@@ -195,7 +199,7 @@ const DashboardLayout = ({ navigation = [], title = "Dashboard" }) => {
             <div className="flex items-center gap-3">
               <Link
                 to="/"
-                className="text-sm text-gray-500 hover:text-orange-600 hidden sm:block"
+                className="text-sm text-slate-400 hover:text-orange-300 hidden sm:block"
               >
                 Voir le site
               </Link>
