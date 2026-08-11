@@ -1,4 +1,12 @@
+import { BriefcaseBusiness, ClipboardList, Heart, MessageCircle } from "lucide-react";
+
 const StatCard = ({ title, value, icon, color = "orange", trend = null }) => {
+  const professionalIcons = {
+    "Devis en cours": ClipboardList,
+    "Chantiers actifs": BriefcaseBusiness,
+    "Messages non lus": MessageCircle,
+    "Techniciens favoris": Heart,
+  };
   const colorStyles = {
     orange: {
       bg: "bg-orange-50",
@@ -29,8 +37,10 @@ const StatCard = ({ title, value, icon, color = "orange", trend = null }) => {
 
   const styles = colorStyles[color] || colorStyles.orange;
 
+  const Icon = professionalIcons[title];
+
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-lg transition">
+    <div className="dashboard-card bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:border-orange-200">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-gray-500">{title}</p>
@@ -48,7 +58,7 @@ const StatCard = ({ title, value, icon, color = "orange", trend = null }) => {
         <div
           className={`w-11 h-11 rounded-lg ${styles.iconBg} flex items-center justify-center text-xl`}
         >
-          {icon}
+          {Icon ? <Icon size={21} strokeWidth={2} /> : icon}
         </div>
       </div>
     </div>

@@ -91,6 +91,12 @@ const testimonials = [
   },
 ];
 
+const realizations = [
+  { file: "realisation1.mp4", title: "Rénovation résidentielle", label: "Finitions & rénovation", color: "orange" },
+  { file: "realisation2.mp4", title: "Projet de construction", label: "Gros œuvre & structure", color: "purple" },
+  { file: "realisation3.mp4", title: "Intervention professionnelle", label: "Suivi de chantier", color: "emerald" },
+];
+
 const cities = ["Yaoundé", "Douala", "Bafoussam", "Garoua"];
 
 const HomePage = () => {
@@ -117,6 +123,12 @@ const HomePage = () => {
 
       <main>
         <section className="relative overflow-hidden bg-[linear-gradient(135deg,#09090b_0%,#181026_46%,#3b0764_100%)]">
+          <img
+            src="/page d'accueille.jpeg"
+            alt="Professionnels du bâtiment sur un chantier"
+            className="absolute inset-0 h-full w-full scale-105 object-cover opacity-35 blur-[3px]"
+          />
+          <div className="absolute inset-0 bg-zinc-950/55" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(168,85,247,0.32),transparent_30%),radial-gradient(circle_at_82%_8%,rgba(244,63,94,0.22),transparent_28%)]" />
           <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-zinc-950 to-transparent" />
 
@@ -385,11 +397,12 @@ const HomePage = () => {
               </h2>
             </div>
 
-            <div className="relative grid gap-6 md:grid-cols-3">
-              {testimonials.map((testimonial) => (
+            <div className="relative overflow-hidden">
+              <div className="testimonial-marquee flex w-max gap-6 py-3">
+              {[...testimonials, ...testimonials].map((testimonial, index) => (
                 <article
-                  key={testimonial.name}
-                  className="group rounded-3xl border border-zinc-200/80 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-200 hover:shadow-xl hover:shadow-purple-950/10"
+                  key={`${testimonial.name}-${index}`}
+                  className="group w-[min(82vw,360px)] shrink-0 rounded-3xl border border-zinc-200/80 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-200 hover:shadow-xl hover:shadow-purple-950/10"
                 >
                   <Quote className="mb-5 text-purple-200" size={30} />
                   <div className="mb-4 flex gap-1 text-amber-500">
@@ -408,6 +421,56 @@ const HomePage = () => {
                       <p className="font-bold">{testimonial.name}</p>
                       <p className="text-sm text-zinc-500">{testimonial.city}</p>
                     </div>
+                  </div>
+                </article>
+              ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="relative overflow-hidden bg-zinc-950 px-4 py-24 text-white sm:px-6 lg:px-8">
+          <div className="absolute -left-24 top-0 h-72 w-72 rounded-full bg-purple-700/20 blur-3xl" />
+          <div className="relative mx-auto max-w-7xl">
+            <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <p className="inline-flex rounded-full border border-orange-300/20 bg-orange-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-orange-200">
+                  Réalisations terrain
+                </p>
+                <h2 className="mt-4 text-3xl font-black md:text-4xl">Des chantiers suivis avec confiance</h2>
+              </div>
+              <div className="mt-5 flex max-w-xl items-start gap-4">
+                <span className="mt-2 h-10 w-1 shrink-0 rounded-full bg-linear-to-b from-orange-400 to-purple-500 shadow-[0_0_18px_rgba(249,115,22,0.45)]" />
+                <p className="text-base font-medium leading-8 text-zinc-300 sm:text-lg">
+                  Découvrez le savoir-faire de nos professionnels à travers des réalisations concrètes, suivies avec exigence.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+              {realizations.map((realization, index) => (
+                <article
+                  key={realization.file}
+                  className="group overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl shadow-black/30 transition duration-500 hover:-translate-y-2 hover:border-orange-300/40 hover:bg-white/10"
+                >
+                  <div className="relative overflow-hidden">
+                    <video
+                      className="aspect-video w-full object-cover transition duration-700 group-hover:scale-105"
+                      src={`/${realization.file}`}
+                      poster="/page cllient.jpg"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls
+                    />
+                    <span className={`absolute left-4 top-4 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] ${realization.color === "orange" ? "bg-orange-500/90 text-white" : realization.color === "purple" ? "bg-purple-500/90 text-white" : "bg-emerald-500/90 text-white"}`}>
+                      0{index + 1}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-200">{realization.label}</p>
+                    <h3 className="mt-2 text-lg font-black text-white">{realization.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-zinc-400">Une réalisation présentée par l’un de nos professionnels vérifiés.</p>
                   </div>
                 </article>
               ))}

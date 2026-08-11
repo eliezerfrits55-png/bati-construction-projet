@@ -73,19 +73,30 @@ const ClientDashboard = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="relative isolate min-h-full space-y-8 overflow-hidden rounded-[2rem] p-1">
+      <img
+        src="/page cllient.jpg"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-30 h-full w-full scale-110 object-cover opacity-25 blur-[7px]"
+      />
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-slate-950/55" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(249,115,22,0.18),transparent_30%),linear-gradient(180deg,rgba(15,23,42,0.2),rgba(15,23,42,0.72))]" />
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+      <div className="dashboard-reveal relative isolate overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 px-6 py-8 text-white shadow-xl shadow-slate-950/20 backdrop-blur-sm sm:px-8">
+        <div className="absolute -right-20 -top-24 -z-10 h-64 w-64 rounded-full bg-orange-500/20 blur-3xl" />
+        <div className="relative">
+        <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
           Bonjour, {user?.first_name || "Client"} 👋
         </h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-slate-300 mt-1">
           Voici un aperçu de vos activités sur Bat-Construction
         </p>
+        </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="dashboard-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
           <StatCard
             key={stat.title}
@@ -98,10 +109,10 @@ const ClientDashboard = () => {
       </div>
 
       {/* Actions rapides */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="dashboard-stagger grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Link
           to="/client/search"
-          className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="dashboard-card group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white/95 p-5 hover:border-orange-300"
         >
           <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-2xl">
             🔍
@@ -118,7 +129,7 @@ const ClientDashboard = () => {
 
         <Link
           to="/client/quotes/request"
-          className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="dashboard-card group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white/95 p-5 hover:border-blue-300"
         >
           <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">
             📝
@@ -133,7 +144,7 @@ const ClientDashboard = () => {
 
         <Link
           to="/client/messages"
-          className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-300 hover:shadow-md transition"
+          className="dashboard-card group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white/95 p-5 hover:border-emerald-300"
         >
           <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">
             💬
@@ -147,7 +158,7 @@ const ClientDashboard = () => {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Devis récents */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="dashboard-card bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Devis récents</h2>
             <Link
@@ -181,7 +192,7 @@ const ClientDashboard = () => {
         </div>
 
         {/* Chantiers actifs */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="dashboard-card bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="font-semibold text-gray-900">Chantiers en cours</h2>
             <Link
@@ -212,7 +223,7 @@ const ClientDashboard = () => {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div
-                      className="bg-orange-500 h-2.5 rounded-full transition-all"
+                      className="dashboard-progress bg-orange-500 h-2.5 rounded-full"
                       style={{ width: `${project.progress}%` }}
                     />
                   </div>
