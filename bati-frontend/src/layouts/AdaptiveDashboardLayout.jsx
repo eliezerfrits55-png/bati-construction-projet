@@ -42,6 +42,7 @@ const AdaptiveDashboardLayout = () => {
           },
           { name: "Mon profil", href: "/technician/profile", iconKey: "profile" },
           { name: "Portfolio", href: "/technician/portfolio", iconKey: "portfolio" },
+          { name: "Chantiers & réalisations", href: "/technician/projects", iconKey: "portfolio" },
           { name: "Demandes", href: "/technician/requests", iconKey: "requests" },
           { name: "Devis", href: "/technician/quotes", iconKey: "quotes" },
           { name: "Calendrier", href: "/technician/calendar", iconKey: "calendar" },

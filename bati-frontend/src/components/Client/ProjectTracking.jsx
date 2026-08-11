@@ -50,6 +50,12 @@ const MOCK_PROJECTS = [
   },
 ];
 
+const TECHNICIAN_REALIZATIONS = [
+  { file: "/realisation1.mp4", title: "Rénovation résidentielle", category: "Plomberie & finitions" },
+  { file: "/realisation2.mp4", title: "Construction sur mesure", category: "Gros œuvre" },
+  { file: "/realisation3.mp4", title: "Intervention technique", category: "Suivi de chantier" },
+];
+
 const ProjectTracking = () => {
   const [projects] = useState(MOCK_PROJECTS);
   const [filterStatus, setFilterStatus] = useState("all");
@@ -103,9 +109,33 @@ const ProjectTracking = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Mes chantiers</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Mes chantiers & réalisations</h1>
         <p className="text-gray-600 mt-1">Suivez l’avancement de vos travaux</p>
       </div>
+
+      <section className="rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-sm backdrop-blur sm:p-6">
+        <div className="mb-5 flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-600">Portfolio professionnel</p>
+            <h2 className="mt-1 text-xl font-black text-slate-900">Réalisations des techniciens</h2>
+          </div>
+          <span className="hidden rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500 sm:inline-flex">Projets vérifiés</span>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {TECHNICIAN_REALIZATIONS.map((realization, index) => (
+            <article key={realization.file} className="group overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div className="relative overflow-hidden">
+                <video className="aspect-video w-full object-cover transition duration-500 group-hover:scale-105" src={realization.file} poster="/page cllient.jpg" muted loop playsInline controls />
+                <span className="absolute left-3 top-3 rounded-full bg-orange-500 px-2.5 py-1 text-[10px] font-bold text-white">0{index + 1}</span>
+              </div>
+              <div className="p-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-orange-300">{realization.category}</p>
+                <h3 className="mt-1 font-bold text-white">{realization.title}</h3>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <div className="flex flex-wrap gap-2">
         <button

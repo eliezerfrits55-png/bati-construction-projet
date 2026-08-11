@@ -183,6 +183,7 @@ const AppRoutes = () => {
           <Route path="dashboard" element={<TechnicianDashboard />} />
           <Route path="profile" element={<ProfileManagement />} />
           <Route path="portfolio" element={<PortfolioManager />} />
+          <Route path="projects" element={<ProjectTracking />} />
           <Route path="requests" element={<RequestManager />} />
           <Route path="quotes" element={<QuoteManager />} />
           <Route path="calendar" element={<Calendar />} />

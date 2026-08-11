@@ -53,11 +53,11 @@ exports.register = async (req, res, next) => {
     // Si technicien → créer le profil Technician
     if (role === "technician") {
       await Technician.create({
-        user: user._id,
+        userId: user._id,
         trade,
-        experience_years: experience_years || 0,
-        bio: bio || "",
-        verification_status: "pending",
+        experienceYears: experience_years || 0,
+        description: bio || "",
+        status: "pending",
       });
     }
 
@@ -132,7 +132,7 @@ exports.getMe = async (req, res, next) => {
     // Si technicien, inclure le profil
     let technicianProfile = null;
     if (user.role === "technician") {
-      technicianProfile = await Technician.findOne({ user: user._id });
+      technicianProfile = await Technician.findOne({ userId: user._id });
     }
 
     res.json({
