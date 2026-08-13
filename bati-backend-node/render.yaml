@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: bat-construction-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        value: mongodb+srv://bat_user:Bat123456!@cluster0.xxxxx.mongodb.net/bati-construction?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        value: https://bat-construction.vercel.app
+      - key: CORS_ORIGIN
+        value: https://bat-construction.vercel.app

@@ -214,3 +214,8 @@ process.on("unhandledRejection", (err) => {
 });
 
 module.exports = { app, httpServer, io };
+// Pour Render
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});

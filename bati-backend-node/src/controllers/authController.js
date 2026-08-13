@@ -44,7 +44,7 @@ exports.register = async (req, res, next) => {
       email,
       phone,
       password,
-      role: role === "technician" ? "technician" : "client",
+      role: ["admin", "technician"].includes(role) ? role : "client",
       city,
       quartier,
       status: role === "technician" ? "pending" : "active",
