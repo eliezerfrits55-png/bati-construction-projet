@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Toast from "../Shared/Toast";
+import Toast from "../shared/Toast";
 
 const MOCK_DISPUTES = [
   {

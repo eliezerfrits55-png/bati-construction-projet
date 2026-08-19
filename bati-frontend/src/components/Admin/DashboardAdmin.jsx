@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Activity, AlertTriangle, CheckCircle2, ClipboardCheck, Building2, Users } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import StatCard from "../Shared/StatCard";
+import StatCard from "../shared/StatCard";
 
 const AdminDashboard = () => {
   const { user } = useAuth();

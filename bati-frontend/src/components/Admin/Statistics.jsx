@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { TrendingUp } from "lucide-react";
-import StatCard from "../Shared/StatCard";
+import StatCard from "../shared/StatCard";
 
 const AdminStatistics = () => {
   const stats = [

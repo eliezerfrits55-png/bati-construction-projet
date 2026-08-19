@@ -18,8 +18,8 @@ import { SocketProvider } from "./context/SocketContext";
 import { useData } from "./hooks/useData";
 
 // Composants partagés
-import LoadingSpinner from "./components/Shared/LoadingSpinner";
-import Toast from "./components/Shared/Toast";
+import LoadingSpinner from "./components/shared/LoadingSpinner";
+import Toast from "./components/shared/Toast";
 
 // Routes
 import AppRoutes from "./routes/AppRoutes";

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import Navbar from "../components/Shared/Navbar";
-import Footer from "../components/Shared/Footer";
+import Navbar from "../components/shared/Navbar";
+import Footer from "../components/shared/Footer";
 
 const AccessDeniedPage = () => {
   const { user, logout } = useAuth();

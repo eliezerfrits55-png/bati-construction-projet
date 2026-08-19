@@ -22,8 +22,8 @@ import {
   WalletCards,
   Wind,
 } from "lucide-react";
-import Navbar from "../components/Shared/Navbar";
-import Footer from "../components/Shared/Footer";
+import Navbar from "../components/shared/Navbar";
+import Footer from "../components/shared/Footer";
 
 const trades = [
   { name: "Plomberie", description: "Fuites, sanitaires et installations", icon: Droplets },

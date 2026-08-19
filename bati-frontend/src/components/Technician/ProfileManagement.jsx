@@ -14,8 +14,8 @@ import {
   UserRound,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import LoadingSpinner from "../Shared/LoadingSpinner";
-import Toast from "../Shared/Toast";
+import LoadingSpinner from "../shared/LoadingSpinner";
+import Toast from "../shared/Toast";
 
 const TRADES = [
   "Plomberie",

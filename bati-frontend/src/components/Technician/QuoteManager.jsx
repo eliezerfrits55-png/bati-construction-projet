@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import Toast from "../Shared/Toast";
+import Toast from "../shared/Toast";
 
 const MOCK_QUOTES = [
   { id: 1, client: "Sophie Kamga", project: "Fuite sous l’évier", amount: 65000, delay: "2 jours", status: "sent", date: "03 août 2026" },

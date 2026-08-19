@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Building2, Wrench } from "lucide-react";
-import Navbar from "../components/Shared/Navbar";
-import Footer from "../components/Shared/Footer";
+import Navbar from "../components/shared/Navbar";
+import Footer from "../components/shared/Footer";
 import Register from "../components/Auth/Register";
 import RegisterTechnician from "../components/Auth/RegisterTechnician";
 

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import Navbar from "../components/Shared/Navbar";
-import Footer from "../components/Shared/Footer";
-import LoadingSpinner from "../components/Shared/LoadingSpinner";
-import Toast from "../components/Shared/Toast";
+import Navbar from "../components/shared/Navbar";
+import Footer from "../components/shared/Footer";
+import LoadingSpinner from "../components/shared/LoadingSpinner";
+import Toast from "../components/shared/Toast";
 
 const LoginPage = () => {
   const navigate = useNavigate();

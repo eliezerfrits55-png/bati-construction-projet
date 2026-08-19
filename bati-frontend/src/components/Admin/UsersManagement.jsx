@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Toast from "../Shared/Toast";
+import Toast from "../shared/Toast";
 
 const MOCK_USERS = [
   {

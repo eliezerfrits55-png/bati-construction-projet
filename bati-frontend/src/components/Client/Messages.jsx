@@ -1,4 +1,4 @@
-import MessagesPanel from "../Shared/MessagesPanel";
+import MessagesPanel from "../shared/MessagesPanel";
 
 const ClientMessages = () => <MessagesPanel role="client" />;
 

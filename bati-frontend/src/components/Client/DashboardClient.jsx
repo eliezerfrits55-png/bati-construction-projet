@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import StatCard from "../Shared/StatCard";
-import LocationMap from "../Shared/LocationMap";
+import StatCard from "../shared/StatCard";
+import LocationMap from "../shared/LocationMap";
 
 const ClientDashboard = () => {
   const { user } = useAuth();

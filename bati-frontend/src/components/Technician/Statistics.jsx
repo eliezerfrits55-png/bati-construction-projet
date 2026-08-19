@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import StatCard from "../Shared/StatCard";
+import StatCard from "../shared/StatCard";
 
 const MONTHLY_DATA = [
   { month: "Mar", quotes: 8, accepted: 5, revenue: 420 },

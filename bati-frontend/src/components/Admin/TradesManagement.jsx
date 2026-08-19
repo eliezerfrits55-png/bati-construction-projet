@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BrickWall, Flame, Hammer, Palette, Ruler, Snowflake, Square, Wrench, Zap } from "lucide-react";
-import Toast from "../Shared/Toast";
+import Toast from "../shared/Toast";
 
 const MOCK_TRADES = [
   { id: 1, name: "Plomberie", technicians: 45, icon: "🔧", active: true },
