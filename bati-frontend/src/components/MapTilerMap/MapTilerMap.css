@@ -1,0 +1,86 @@
+/* src/components/MapTilerMap/MapTilerMap.css */
+.maptiler-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f1f5f9;
+  min-height: 300px;
+}
+
+.maptiler-map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Boutons de contrôle MapTiler */
+.maptilersdk-control {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.maptilersdk-control button {
+  border-radius: 8px !important;
+}
+
+/* Popups */
+.maptilersdk-popup-content {
+  padding: 12px !important;
+  font-family: inherit !important;
+  border-radius: 8px !important;
+}
+
+.maptilersdk-popup-close-button {
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+}
+
+.maptilersdk-popup-close-button:hover {
+  background: #f1f5f9 !important;
+}
+
+/* Animation d'apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.maptiler-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .maptiler-container {
+    border-radius: 8px;
+  }
+}
+
+/* Indicateur de chargement */
+.maptiler-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #f97316;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

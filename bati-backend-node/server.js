@@ -21,6 +21,7 @@ const messageRoutes = require("./src/routes/messageRoutes");
 const reviewRoutes = require("./src/routes/reviewRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const calendarRoutes = require("./src/routes/calendarRoutes");
+const locationRoutes = require("./src/routes/locationRoutes");
 
 // Import middleware
 const { errorHandler } = require("./src/middlewares/erroHandler");
@@ -184,6 +185,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/calendar", calendarRoutes);
+app.use("/api/location", locationRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -214,8 +216,3 @@ process.on("unhandledRejection", (err) => {
 });
 
 module.exports = { app, httpServer, io };
-// Pour Render
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});

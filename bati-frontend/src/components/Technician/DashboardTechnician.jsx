@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { BriefcaseBusiness, ClipboardList, FileText, Image, Star } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import StatCard from "../Shared/StatCard";
+import LocationMap from "../Shared/LocationMap";
 
 const TechnicianDashboard = () => {
   const { user } = useAuth();
@@ -100,6 +101,8 @@ const TechnicianDashboard = () => {
           />
         ))}
       </div>
+
+      <LocationMap role="technician" />
 
       {/* Actions rapides */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

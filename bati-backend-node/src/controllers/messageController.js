@@ -9,7 +9,7 @@ exports.getConversations = async (req, res, next) => {
       participants: req.user._id,
     })
       .populate("participants", "first_name last_name avatar role")
-      .sort({ last_message_at: -1 });
+      .sort({ lastMessageAt: -1 });
 
     res.json({
       success: true,
@@ -34,7 +34,7 @@ exports.createConversation = async (req, res, next) => {
     if (!conversation) {
       conversation = await Conversation.create({
         participants: [req.user._id, participantId],
-        project: projectId || undefined,
+        projectId: projectId || undefined,
       });
       conversation = await conversation.populate(
         "participants",
@@ -55,20 +55,28 @@ exports.createConversation = async (req, res, next) => {
 // @route   GET /api/messages/conversations/:id
 exports.getMessages = async (req, res, next) => {
   try {
+    const conversation = await Conversation.findOne({
+      _id: req.params.id,
+      participants: req.user._id,
+    });
+    if (!conversation) {
+      return res.status(403).json({ success: false, message: "Accès à cette conversation refusé" });
+    }
+
     const messages = await Message.find({
-      conversation: req.params.id,
+      conversationId: req.params.id,
     })
-      .populate("sender", "first_name last_name avatar")
+      .populate("senderId", "first_name last_name avatar")
       .sort({ createdAt: 1 });
 
     // Marquer comme lus
     await Message.updateMany(
       {
-        conversation: req.params.id,
-        receiver: req.user._id,
-        is_read: false,
+        conversationId: req.params.id,
+        receiverId: req.user._id,
+        isRead: false,
       },
-      { is_read: true, read_at: new Date() },
+      { isRead: true, readAt: new Date() },
     );
 
     res.json({
@@ -86,20 +94,33 @@ exports.sendMessage = async (req, res, next) => {
   try {
     const { conversationId, receiverId, content } = req.body;
 
+    if (!content?.trim() || !receiverId) {
+      return res.status(400).json({ success: false, message: "Le destinataire et le message sont requis" });
+    }
+
+    const conversation = await Conversation.findOne({
+      _id: conversationId,
+      participants: { $all: [req.user._id, receiverId] },
+    });
+    if (!conversation) {
+      return res.status(403).json({ success: false, message: "Conversation invalide" });
+    }
+
     const message = await Message.create({
-      conversation: conversationId,
-      sender: req.user._id,
-      receiver: receiverId,
-      content,
+      conversationId,
+      senderId: req.user._id,
+      receiverId,
+      content: content.trim(),
     });
 
     await Conversation.findByIdAndUpdate(conversationId, {
-      last_message: content,
-      last_message_at: new Date(),
+      lastMessage: content.trim(),
+      lastMessageAt: new Date(),
+      lastMessageSenderId: req.user._id,
     });
 
     const populated = await message.populate(
-      "sender",
+      "senderId",
       "first_name last_name avatar",
     );
 

@@ -9,6 +9,11 @@ const conversationSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
+      default: null,
+    },
     lastMessage: {
       type: String,
       default: null,

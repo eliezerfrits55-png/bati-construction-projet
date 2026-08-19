@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import StatCard from "../Shared/StatCard";
+import LocationMap from "../Shared/LocationMap";
 
 const ClientDashboard = () => {
   const { user } = useAuth();
@@ -155,6 +156,8 @@ const ClientDashboard = () => {
           </div>
         </Link>
       </div>
+
+      <LocationMap role="client" />
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Devis récents */}
