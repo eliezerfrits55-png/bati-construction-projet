@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "build": "node -e \"console.log('Backend Node.js: aucune compilation nécessaire')\"",
     "start": "node server.js",
     "seed": "node src/utils/seed.js"
   },
