@@ -166,6 +166,23 @@ mongoose
   });
 
 // ============ ROUTES ============
+// Service info
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "BATI Construction API opérationnelle",
+    health: "/api/health",
+  });
+});
+
+app.get("/api", (req, res) => {
+  res.json({
+    success: true,
+    message: "BATI Construction API opérationnelle",
+    health: "/api/health",
+  });
+});
+
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({
