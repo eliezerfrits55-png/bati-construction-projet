@@ -199,8 +199,10 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // ============ START SERVER ============
-const PORT = process.env.PORT || 5000;
-httpServer.listen(PORT, () => {
+const PORT = Number(process.env.PORT) || 5000;
+const HOST = "0.0.0.0";
+
+httpServer.listen(PORT, HOST, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`🔌 Socket.IO ready`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
