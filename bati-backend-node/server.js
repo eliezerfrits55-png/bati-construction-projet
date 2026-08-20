@@ -12,6 +12,18 @@ const path = require("path");
 // Load environment variables
 dotenv.config();
 
+const allowedOrigins = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+const corsOrigin = (origin, callback) => {
+  // Autoriser les requêtes sans Origin (health checks, curl) et les origines configurées.
+  if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+    return callback(null, true);
+  }
+  return callback(new Error("Origine non autorisée par CORS"));
+};
+
 // Import routes
 const authRoutes = require("./src/routes/authRoutes");
 const technicianRoutes = require("./src/routes/technicianRoutes");
@@ -33,7 +45,7 @@ const httpServer = createServer(app);
 // ============ SOCKET.IO ============
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: allowedOrigins.length ? allowedOrigins : true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   },
@@ -140,7 +152,7 @@ app.use(
 app.use(compression());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: corsOrigin,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],

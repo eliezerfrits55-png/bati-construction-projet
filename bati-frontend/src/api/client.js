@@ -1,7 +1,16 @@
 import axios from "axios";
 
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const apiBaseUrl = configuredApiUrl || (import.meta.env.DEV ? "http://localhost:5000/api" : "");
+
+if (!apiBaseUrl && import.meta.env.PROD) {
+  console.error(
+    "VITE_API_URL est absent. Configurez-le avec l’URL Render du backend suivie de /api.",
+  );
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: apiBaseUrl,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -47,8 +56,15 @@ api.interceptors.response.use(
       return Promise.reject(new Error(message));
     }
 
-    // Erreur réseau
-    return Promise.reject(new Error("Impossible de contacter le serveur"));
+    // Erreur réseau : l'API est inaccessible ou VITE_API_URL est incorrect.
+    const target = error.config?.baseURL || apiBaseUrl;
+    return Promise.reject(
+      new Error(
+        target
+          ? `Impossible de contacter le serveur (${target}). Vérifiez que le backend Render est actif et que VITE_API_URL est correcte.`
+          : "Impossible de contacter le serveur. Configurez VITE_API_URL avec l’URL Render du backend.",
+      ),
+    );
   },
 );
 
