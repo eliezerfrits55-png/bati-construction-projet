@@ -1,11 +1,13 @@
 import axios from "axios";
 
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-const apiBaseUrl = configuredApiUrl || (import.meta.env.DEV ? "http://localhost:5000/api" : "");
+const productionApiUrl = "https://bat-construction-api.onrender.com/api";
+const apiBaseUrl =
+  configuredApiUrl || (import.meta.env.DEV ? "http://localhost:5000/api" : productionApiUrl);
 
-if (!apiBaseUrl && import.meta.env.PROD) {
+if (import.meta.env.PROD && !configuredApiUrl) {
   console.error(
-    "VITE_API_URL est absent. Configurez-le avec l’URL Render du backend suivie de /api.",
+    `VITE_API_URL est absent. Utilisation de l’URL Render par défaut : ${productionApiUrl}`,
   );
 }
 
