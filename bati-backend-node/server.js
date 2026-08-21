@@ -18,7 +18,13 @@ const allowedOrigins = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || ""
   .filter(Boolean);
 const corsOrigin = (origin, callback) => {
   // Autoriser les requêtes sans Origin (health checks, curl) et les origines configurées.
-  if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+  const normalizedOrigin = origin?.replace(/\/$/, "");
+
+  if (
+    !origin ||
+    allowedOrigins.length === 0 ||
+    allowedOrigins.includes(normalizedOrigin)
+  ) {
     return callback(null, true);
   }
   return callback(new Error("Origine non autorisée par CORS"));
