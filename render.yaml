@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: bat-construction-api
+    name: bati-construction-projet
     runtime: node
     rootDir: bati-backend-node
     buildCommand: npm install && npm run build

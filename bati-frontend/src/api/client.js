@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-const productionApiUrl = "https://bat-construction-api.onrender.com/api";
+const productionApiUrl = "https://bati-construction-projet.onrender.com/api";
 const apiBaseUrl =
   configuredApiUrl || (import.meta.env.DEV ? "http://localhost:5000/api" : productionApiUrl);
 
