@@ -11,7 +11,7 @@ const { Server } = require("socket.io");
 const path = require("path");
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 const configuredDnsServers = (process.env.MONGODB_DNS_SERVERS || "")
   .split(",")
