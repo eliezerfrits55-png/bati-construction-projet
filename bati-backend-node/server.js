@@ -44,6 +44,7 @@ const adminRoutes = require("./src/routes/adminRoutes");
 const calendarRoutes = require("./src/routes/calendarRoutes");
 const locationRoutes = require("./src/routes/locationRoutes");
 const disputeRoutes = require("./src/routes/disputeRoutes");
+const { normalizeMongoUri } = require("./src/config/mongoUri");
 
 // Import middleware
 const { errorHandler } = require("./src/middlewares/erroHandler");
@@ -177,7 +178,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ============ MONGODB CONNECTION ============
 const connectDatabase = () =>
-  mongoose.connect(process.env.MONGODB_URI, {
+  mongoose.connect(normalizeMongoUri(process.env.MONGODB_URI), {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     serverSelectionTimeoutMS: 10000,

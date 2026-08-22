@@ -1,12 +1,20 @@
 const fs = require("fs");
+const dns = require("dns");
 const path = require("path");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
+const dnsServers = (process.env.MONGODB_DNS_SERVERS || "")
+  .split(",")
+  .map((server) => server.trim())
+  .filter(Boolean);
+if (dnsServers.length > 0) dns.setServers(dnsServers);
+
 const User = require("../models/User");
 const Trade = require("../models/Trade");
+const { normalizeMongoUri } = require("../config/mongoUri");
 
 const trades = [
   { name: "Maçonnerie", icon: "🧱" },
@@ -22,7 +30,10 @@ const seed = async () => {
     throw new Error("MONGODB_URI est absente du fichier .env");
   }
 
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(normalizeMongoUri(process.env.MONGODB_URI), {
+    serverSelectionTimeoutMS: 15000,
+    connectTimeoutMS: 15000,
+  });
   console.log(`Connexion à MongoDB : ${mongoose.connection.db.databaseName}`);
 
   const usersFile = path.resolve(__dirname, "../../data/users.json");
