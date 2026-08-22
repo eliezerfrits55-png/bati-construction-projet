@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-const productionApiUrl = "https://bati-construction-projet.onrender.com/api";
+const localApiUrl = "http://localhost:5000/api";
 const apiBaseUrl =
-  configuredApiUrl || (import.meta.env.DEV ? "http://localhost:5000/api" : productionApiUrl);
+  configuredApiUrl || localApiUrl;
 
-if (import.meta.env.PROD && !configuredApiUrl) {
+if (!configuredApiUrl) {
   console.error(
-    `VITE_API_URL est absent. Utilisation de l’URL Render par défaut : ${productionApiUrl}`,
+    `VITE_API_URL est absent. Utilisation de l’API locale : ${localApiUrl}`,
   );
 }
 
@@ -63,8 +63,8 @@ api.interceptors.response.use(
     return Promise.reject(
       new Error(
         target
-          ? `Impossible de contacter le serveur (${target}). Vérifiez que le backend Render est actif et que VITE_API_URL est correcte.`
-          : "Impossible de contacter le serveur. Configurez VITE_API_URL avec l’URL Render du backend.",
+          ? `Impossible de contacter le serveur (${target}). Vérifiez que le backend local est démarré.`
+          : "Impossible de contacter le serveur. Démarrez le backend local sur le port 5000.",
       ),
     );
   },

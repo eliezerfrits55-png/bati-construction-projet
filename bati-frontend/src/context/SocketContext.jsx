@@ -27,7 +27,7 @@ export const SocketProvider = ({ children }) => {
     try {
       // Exemple avec une connexion WebSocket native
       // En production, tu utiliseras Laravel Echo + Reverb/Pusher
-      const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:8080";
+      const wsUrl = import.meta.env.VITE_WS_URL || "ws://localhost:5000";
       const socket = new WebSocket(`${wsUrl}?token=${token}`);
 
       socket.onopen = () => {
