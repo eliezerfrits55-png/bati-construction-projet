@@ -109,4 +109,5 @@ calendarEventSchema.index({ projectId: 1 });
 calendarEventSchema.index({ status: 1 });
 calendarEventSchema.index({ type: 1 });
 
-module.exports = mongoose.model("CalendarEvent", calendarEventSchema);
+module.exports = mongoose.model
+("CalendarEvent", calendarEventSchema);

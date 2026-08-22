@@ -18,13 +18,7 @@ const allowedOrigins = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || ""
   .filter(Boolean);
 const corsOrigin = (origin, callback) => {
   // Autoriser les requêtes sans Origin (health checks, curl) et les origines configurées.
-  const normalizedOrigin = origin?.replace(/\/$/, "");
-
-  if (
-    !origin ||
-    allowedOrigins.length === 0 ||
-    allowedOrigins.includes(normalizedOrigin)
-  ) {
+  if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
     return callback(null, true);
   }
   return callback(new Error("Origine non autorisée par CORS"));
@@ -40,6 +34,7 @@ const reviewRoutes = require("./src/routes/reviewRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const calendarRoutes = require("./src/routes/calendarRoutes");
 const locationRoutes = require("./src/routes/locationRoutes");
+const disputeRoutes = require("./src/routes/disputeRoutes");
 
 // Import middleware
 const { errorHandler } = require("./src/middlewares/erroHandler");
@@ -221,6 +216,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/calendar", calendarRoutes);
 app.use("/api/location", locationRoutes);
+app.use("/api/disputes", disputeRoutes);
 
 // 404 handler
 app.use((req, res) => {
