@@ -167,15 +167,12 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ============ MONGODB CONNECTION ============
-mongoose
-  .connect(process.env.MONGODB_URI, {
+const connectDatabase = () =>
+  mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => {
-    console.error("❌ MongoDB connection error:", err);
-    process.exit(1);
+    serverSelectionTimeoutMS: 10000,
+    connectTimeoutMS: 10000,
   });
 
 // ============ ROUTES ============
@@ -233,11 +230,24 @@ app.use(errorHandler);
 const PORT = Number(process.env.PORT) || 5000;
 const HOST = "0.0.0.0";
 
-httpServer.listen(PORT, HOST, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`🔌 Socket.IO ready`);
-  console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
-});
+const startServer = async () => {
+  try {
+    await connectDatabase();
+    console.log("✅ MongoDB connected successfully");
+
+    httpServer.listen(PORT, HOST, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(`🔌 Socket.IO ready`);
+      console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
+    });
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+    console.error("Vérifiez MONGODB_URI et l’autorisation réseau de MongoDB Atlas.");
+    process.exitCode = 1;
+  }
+};
+
+startServer();
 
 // Handle uncaught exceptions
 process.on("uncaughtException", (err) => {
