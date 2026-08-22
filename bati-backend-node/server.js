@@ -1,4 +1,5 @@
 const express = require("express");
+const dns = require("dns");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -11,6 +12,14 @@ const path = require("path");
 
 // Load environment variables
 dotenv.config();
+
+const configuredDnsServers = (process.env.MONGODB_DNS_SERVERS || "")
+  .split(",")
+  .map((server) => server.trim())
+  .filter(Boolean);
+if (configuredDnsServers.length > 0) {
+  dns.setServers(configuredDnsServers);
+}
 
 const allowedOrigins = (process.env.CORS_ORIGINS || process.env.CLIENT_URL || "")
   .split(",")
